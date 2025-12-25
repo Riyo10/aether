@@ -1,0 +1,198 @@
+
+import React, { useState } from 'react';
+import { Mail, Lock, User, ArrowRight, Github, Chrome, AlertCircle } from 'lucide-react';
+import { User as UserType } from '../types';
+
+interface AuthProps {
+  onLogin: (user: UserType) => void;
+}
+
+export const Auth: React.FC<AuthProps> = ({ onLogin }) => {
+  const [isLogin, setIsLogin] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  // Form State
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    password: ''
+  });
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+    if (error) setError(null); // Clear error on typing
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setError(null);
+
+    // Basic Validation
+    if (!formData.email || !formData.password) {
+      setError("Please provide both email and password.");
+      return;
+    }
+
+    if (!isLogin && !formData.name) {
+      setError("Full Name is required for account creation.");
+      return;
+    }
+
+    setIsLoading(true);
+
+    // Simulate network request/authentication delay
+    setTimeout(() => {
+      setIsLoading(false);
+      
+      // Create User Session Object
+      // In a real app, this would come from the backend API response
+      const userProfile: UserType = {
+        id: `user_${Math.random().toString(36).substr(2, 9)}`,
+        name: isLogin ? (formData.name || formData.email.split('@')[0]) : formData.name, // Use email handle if name missing on login mock
+        email: formData.email,
+        // Generate a deterministic avatar based on email
+        avatar: `https://api.dicebear.com/7.x/shapes/svg?seed=${formData.email}`,
+        token: `mock_jwt_${Date.now()}`,
+        joinedAt: new Date().toLocaleDateString('en-US', { month: 'short', year: '2-digit' }) // Capture signup date
+      };
+
+      onLogin(userProfile);
+    }, 1500);
+  };
+
+  return (
+    <div className="w-full min-h-[calc(100vh-80px)] flex flex-col items-center justify-center relative overflow-hidden px-6 pt-20">
+      {/* Background Decor */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gradient-to-tr from-cherry/20 to-transparent rounded-full blur-[120px] pointer-events-none" />
+
+      <div className="w-full max-w-md relative z-10 animate-in fade-in zoom-in-95 duration-700">
+        
+        {/* Rotating Light Border Container */}
+        <div className="relative group rounded-3xl">
+            {/* The Moving Gradient Layer */}
+            <div className="absolute -inset-[1px] rounded-3xl overflow-hidden pointer-events-none">
+                <div className="absolute inset-[-50%] bg-[conic-gradient(from_0deg,transparent_0_340deg,#D90429_350deg,#ffffff_360deg)] animate-[spin_3s_linear_infinite] opacity-60"></div>
+            </div>
+            
+            {/* Inner Darkening Layer to ensure text legibility if glass is too transparent */}
+            <div className="absolute inset-[1px] bg-black/40 rounded-[22px] pointer-events-none"></div>
+
+            <div className="glass-card p-8 md:p-12 rounded-3xl border-t border-white/10 shadow-2xl relative overflow-hidden backdrop-blur-3xl">
+              
+              {/* Header */}
+              <div className="text-center mb-10">
+                <h2 className="font-display text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-br from-white via-cream to-cherry mb-3">
+                  {isLogin ? 'Welcome Back' : 'Initialize Identity'}
+                </h2>
+                <p className="text-gray-400 text-sm font-sans">
+                  {isLogin ? 'Authenticate to access the neural mesh.' : 'Join the architects of the new intelligence.'}
+                </p>
+              </div>
+
+              {/* Social Auth */}
+              <div className="grid grid-cols-2 gap-4 mb-8">
+                <button type="button" className="flex items-center justify-center gap-2 py-3 px-4 bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl transition-all group">
+                  <Github className="w-4 h-4 text-gray-400 group-hover:text-white" />
+                  <span className="text-xs font-bold text-gray-400 group-hover:text-white uppercase tracking-wider">Github</span>
+                </button>
+                <button type="button" className="flex items-center justify-center gap-2 py-3 px-4 bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl transition-all group">
+                  <Chrome className="w-4 h-4 text-gray-400 group-hover:text-white" />
+                  <span className="text-xs font-bold text-gray-400 group-hover:text-white uppercase tracking-wider">Google</span>
+                </button>
+              </div>
+
+              <div className="relative mb-8">
+                <div className="absolute inset-0 flex items-center">
+                  <div className="w-full border-t border-white/10"></div>
+                </div>
+                <div className="relative flex justify-center text-xs uppercase">
+                  <span className="bg-[#0c0c0c] px-2 text-gray-500 font-mono tracking-widest">Or Continue With</span>
+                </div>
+              </div>
+
+              {/* Error Message */}
+              {error && (
+                <div className="mb-6 p-3 bg-red-500/10 border border-red-500/20 rounded-lg flex items-center gap-2 text-red-400 text-xs font-bold animate-in fade-in slide-in-from-top-2">
+                   <AlertCircle className="w-4 h-4" /> {error}
+                </div>
+              )}
+
+              {/* Form */}
+              <form onSubmit={handleSubmit} className="space-y-5">
+                {!isLogin && (
+                  <div className="group relative">
+                    <User className="absolute left-4 top-3.5 w-4 h-4 text-gray-500 group-focus-within:text-cherry transition-colors" />
+                    <input 
+                      name="name"
+                      type="text" 
+                      placeholder="Full Name"
+                      value={formData.name}
+                      onChange={handleInputChange}
+                      className="w-full bg-black/40 border border-white/10 rounded-xl py-3 pl-11 pr-4 text-sm text-white placeholder-gray-600 focus:outline-none focus:border-cherry/50 focus:ring-1 focus:ring-cherry/50 transition-all font-sans"
+                    />
+                  </div>
+                )}
+
+                <div className="group relative">
+                  <Mail className="absolute left-4 top-3.5 w-4 h-4 text-gray-500 group-focus-within:text-cherry transition-colors" />
+                  <input 
+                    name="email"
+                    type="email" 
+                    placeholder="Work Email"
+                    value={formData.email}
+                    onChange={handleInputChange}
+                    className="w-full bg-black/40 border border-white/10 rounded-xl py-3 pl-11 pr-4 text-sm text-white placeholder-gray-600 focus:outline-none focus:border-cherry/50 focus:ring-1 focus:ring-cherry/50 transition-all font-sans"
+                  />
+                </div>
+
+                <div className="group relative">
+                  <Lock className="absolute left-4 top-3.5 w-4 h-4 text-gray-500 group-focus-within:text-cherry transition-colors" />
+                  <input 
+                    name="password"
+                    type="password" 
+                    placeholder="Password"
+                    value={formData.password}
+                    onChange={handleInputChange}
+                    className="w-full bg-black/40 border border-white/10 rounded-xl py-3 pl-11 pr-4 text-sm text-white placeholder-gray-600 focus:outline-none focus:border-cherry/50 focus:ring-1 focus:ring-cherry/50 transition-all font-sans"
+                  />
+                </div>
+
+                <button 
+                  type="submit"
+                  disabled={isLoading}
+                  className="w-full py-4 bg-gradient-to-r from-cherry to-red-800 hover:from-red-600 hover:to-red-900 text-white font-bold text-xs uppercase tracking-widest rounded-xl transition-all shadow-[0_0_20px_-5px_rgba(217,4,41,0.4)] hover:shadow-[0_0_30px_-5px_rgba(217,4,41,0.6)] flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed mt-2 relative overflow-hidden"
+                >
+                  {/* Subtle shine effect on button */}
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent translate-x-[-100%] animate-[shimmer_2s_infinite]"></div>
+                  
+                  {isLoading ? (
+                    <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                  ) : (
+                    <>
+                      {isLogin ? 'Access System' : 'Create Account'} <ArrowRight className="w-4 h-4" />
+                    </>
+                  )}
+                </button>
+              </form>
+
+              {/* Toggle */}
+              <div className="mt-8 text-center">
+                <p className="text-gray-500 text-xs font-sans">
+                  {isLogin ? "New to Aether?" : "Already possess clearance?"}{' '}
+                  <button 
+                    type="button"
+                    onClick={() => { setIsLogin(!isLogin); setError(null); }}
+                    className="text-white font-bold hover:text-cherry transition-colors ml-1 border-b border-transparent hover:border-cherry"
+                  >
+                    {isLogin ? "Request Access" : "Sign In"}
+                  </button>
+                </p>
+              </div>
+            </div>
+        </div>
+      </div>
+    </div>
+  );
+};
