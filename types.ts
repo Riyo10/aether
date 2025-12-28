@@ -1,3 +1,12 @@
+// EmailJS global type declaration
+declare global {
+  interface Window {
+    emailjs: {
+      init: (options: { publicKey: string }) => void;
+      send: (serviceId: string, templateId: string, params: Record<string, string>) => Promise<{ status: number; text: string }>;
+    };
+  }
+}
 
 export interface Position {
   x: number;
@@ -48,6 +57,9 @@ export interface NodeData {
   output?: string; // The result of the execution
   isExecuting?: boolean;
   attachments?: Attachment[];
+  // Custom API key for AI models
+  customApiKey?: string;
+  apiProvider?: 'openrouter' | 'openai' | 'anthropic' | 'google' | 'custom';
   // Integrations specific data
   recipient?: string;
   subject?: string;

@@ -24,7 +24,7 @@ const credentialService = {
 };
 
 // OpenRouter API config
-const OPENROUTER_API_KEY = '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';
+const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY || '';
 const OPENROUTER_MODEL = 'xiaomi/mimo-v2-flash:free';
 
 // Inline AI service for node handlers using OpenRouter
@@ -82,9 +82,27 @@ export const nodeHandlerRegistry = new NodeHandlerRegistry();
 // FRONTEND COMPATIBILITY - AGENT NODE
 // ===========================================
 
-// AGENT node handler - used by frontend for AI agent nodes
+// Only 3 models supported:
+// 1. mimo-v2-flash (Xiaomi) - Text AI via OpenRouter
+// 2. tavily-search - Web search via Tavily API
+// 3. groq-vision - Image/OCR via Groq API (Llama 4 Scout)
+
+const TAVILY_API_KEY = process.env.TAVILY_API_KEY || '';
+const GROQ_API_KEY = process.env.GROQ_API_KEY || '';
+
+// AGENT node handler - routes to appropriate API based on model
 nodeHandlerRegistry.register('AGENT', async (node, input, context) => {
-  const { model = 'gemini-2.5-flash', systemPrompt, category } = node.config;
+  // Debug: log the entire node structure to find where model is stored
+  logger.info(`[AGENT] Node structure:`, { 
+    nodeId: node.id,
+    nodeName: node.name,
+    nodeType: node.type,
+    configKeys: node.config ? Object.keys(node.config) : 'no config',
+    configModel: node.config?.model,
+    configSystemPrompt: node.config?.systemPrompt?.substring(0, 50)
+  });
+  
+  const { model = 'mimo-v2-flash', systemPrompt } = node.config || {};
   
   // Get user input from webhook body or previous node
   const userMessage = input?.body?.message || input?.body?.question || input?.body?.input || 
@@ -98,38 +116,126 @@ nodeHandlerRegistry.register('AGENT', async (node, input, context) => {
     userMessage: userMessage?.substring(0, 100)
   });
   
-  // Map model names to OpenRouter model IDs
-  const MODEL_MAP: Record<string, string> = {
-    'gemini-2.5-flash': 'google/gemini-2.0-flash-exp:free',
-    'gemini-3-pro-preview': 'google/gemini-2.0-flash-exp:free',
-    'mimo-v2-flash': 'xiaomi/mimo-v2-flash:free',
-  };
-  const actualModel = MODEL_MAP[model] || OPENROUTER_MODEL;
-  
   try {
-    const messages: any[] = [];
+    let aiResponse: string;
     
-    if (systemPrompt) {
-      messages.push({ role: 'system', content: systemPrompt });
-    }
-    
-    messages.push({ role: 'user', content: userMessage });
-
-    const response = await axios.post(
-      'https://openrouter.ai/api/v1/chat/completions',
-      {
-        model: actualModel,
-        messages: messages
-      },
-      {
-        headers: {
-          'Authorization': `Bearer ${OPENROUTER_API_KEY}`,
-          'Content-Type': 'application/json'
-        }
+    // Route to appropriate API based on model
+    if (model === 'mock-sender') {
+      // EMAIL SENDER - Use Resend API
+      const emailTo = input?.body?.email || input?.email || node.config?.to || 'bishalpvtxd@gmail.com';
+      const emailSubject = node.config?.subject || input?.subject || 'Workflow Notification';
+      const emailBody = input?.response || input?.aiResponse || input?.output || input?.body?.response || 
+                        (typeof input === 'string' ? input : JSON.stringify(input, null, 2));
+      
+      logger.info(`[MOCK-SENDER] Sending email via Resend`, { to: emailTo, subject: emailSubject });
+      
+      try {
+        const emailResponse = await axios.post(
+          'https://api.resend.com/emails',
+          {
+            from: 'onboarding@resend.dev',
+            to: emailTo,
+            subject: emailSubject,
+            html: `<div style="font-family: Arial, sans-serif; padding: 20px;">
+                    <h2 style="color: #667eea;">🚀 Aether Workflow Result</h2>
+                    <div style="background: #f5f5f5; padding: 15px; border-radius: 8px; white-space: pre-wrap;">
+                      ${emailBody}
+                    </div>
+                    <p style="color: #888; margin-top: 20px; font-size: 12px;">Sent by Aether Orchestrate</p>
+                   </div>`
+          },
+          {
+            headers: {
+              'Authorization': `Bearer ${process.env.RESEND_API_KEY || 're_FXGhVrqm_KgBsJSZdmyo1kSHvbxQM6eMn'}`,
+              'Content-Type': 'application/json'
+            }
+          }
+        );
+        
+        logger.info(`[MOCK-SENDER] Email sent successfully`, { id: emailResponse.data?.id });
+        aiResponse = `✅ Email sent successfully to ${emailTo}`;
+      } catch (emailError: any) {
+        logger.error(`[MOCK-SENDER] Email failed:`, emailError.response?.data || emailError.message);
+        aiResponse = `❌ Email failed: ${emailError.response?.data?.message || emailError.message}`;
       }
-    );
-    
-    const aiResponse = response.data.choices?.[0]?.message?.content || 'No response';
+      
+    } else if (model === 'tavily-search') {
+      // TAVILY WEB SEARCH
+      const response = await axios.post(
+        'https://api.tavily.com/search',
+        {
+          api_key: TAVILY_API_KEY,
+          query: userMessage,
+          max_results: 5,
+          include_answer: true
+        },
+        { headers: { 'Content-Type': 'application/json' } }
+      );
+      
+      const data = response.data;
+      let formattedResponse = '';
+      if (data.answer) {
+        formattedResponse += `**Summary:**\n${data.answer}\n\n`;
+      }
+      if (data.results?.length > 0) {
+        formattedResponse += `**Sources:**\n`;
+        data.results.forEach((result: any, index: number) => {
+          formattedResponse += `\n${index + 1}. **${result.title}**\n   ${result.content?.substring(0, 200)}...\n   🔗 ${result.url}\n`;
+        });
+      }
+      aiResponse = formattedResponse || 'No search results found.';
+      
+    } else if (model === 'groq-vision') {
+      // GROQ VISION (for images)
+      const messageContent: any[] = [
+        { type: 'text', text: systemPrompt || 'Extract all text from this image.' }
+      ];
+      
+      // Check if input contains image
+      const imageUrl = input?.imageUrl || input?.body?.imageUrl;
+      if (imageUrl) {
+        messageContent.push({ type: 'image_url', image_url: { url: imageUrl } });
+      }
+      
+      const response = await axios.post(
+        'https://api.groq.com/openai/v1/chat/completions',
+        {
+          model: 'meta-llama/llama-4-scout-17b-16e-instruct',
+          messages: [{ role: 'user', content: messageContent }],
+          max_tokens: 4096
+        },
+        {
+          headers: {
+            'Authorization': `Bearer ${GROQ_API_KEY}`,
+            'Content-Type': 'application/json'
+          }
+        }
+      );
+      aiResponse = response.data.choices?.[0]?.message?.content || 'No text extracted.';
+      
+    } else {
+      // XIAOMI MIMO-V2-FLASH (default text AI)
+      const messages: any[] = [];
+      if (systemPrompt) {
+        messages.push({ role: 'system', content: systemPrompt });
+      }
+      messages.push({ role: 'user', content: userMessage });
+
+      const response = await axios.post(
+        'https://openrouter.ai/api/v1/chat/completions',
+        {
+          model: OPENROUTER_MODEL,
+          messages: messages
+        },
+        {
+          headers: {
+            'Authorization': `Bearer ${OPENROUTER_API_KEY}`,
+            'Content-Type': 'application/json'
+          }
+        }
+      );
+      aiResponse = response.data.choices?.[0]?.message?.content || 'No response';
+    }
     
     logger.info(`[AGENT] Response received`, { 
       nodeId: node.id, 
@@ -141,8 +247,9 @@ nodeHandlerRegistry.register('AGENT', async (node, input, context) => {
       response: aiResponse,
       aiResponse: aiResponse,
       answer: aiResponse,
+      output: aiResponse,  // Add explicit output field for webhook response
       agent: node.name,
-      model: actualModel
+      model: model
     };
   } catch (error: any) {
     logger.error(`[AGENT] AI call failed:`, error.message);
@@ -150,6 +257,192 @@ nodeHandlerRegistry.register('AGENT', async (node, input, context) => {
       ...input,
       error: error.message,
       response: `AI Error: ${error.message}`
+    };
+  }
+});
+
+// ===========================================
+// TAVILY WEB SEARCH HANDLER (also callable directly as model 'tavily-search')
+// ===========================================
+
+nodeHandlerRegistry.register('tavily-search', async (node, input, context) => {
+  const { systemPrompt } = node.config;
+  
+  // Get search query from input
+  const searchQuery = input?.body?.message || input?.body?.question || input?.body?.query || 
+                      input?.message || input?.question || input?.query || 
+                      (typeof input?.body === 'string' ? input.body : null) ||
+                      (typeof input === 'string' ? input : '');
+  
+  logger.info(`[TAVILY] Searching for: ${searchQuery?.substring(0, 100)}`);
+  
+  if (!searchQuery) {
+    return {
+      ...input,
+      error: 'No search query provided',
+      response: 'Please provide a search query.'
+    };
+  }
+  
+  try {
+    const response = await axios.post(
+      'https://api.tavily.com/search',
+      {
+        api_key: TAVILY_API_KEY,
+        query: searchQuery,
+        max_results: 5,
+        include_answer: true,
+        include_raw_content: false
+      },
+      {
+        headers: { 'Content-Type': 'application/json' }
+      }
+    );
+    
+    const data = response.data;
+    
+    // Format results
+    let formattedResponse = '';
+    
+    if (data.answer) {
+      formattedResponse += `**Summary:**\n${data.answer}\n\n`;
+    }
+    
+    if (data.results && data.results.length > 0) {
+      formattedResponse += `**Sources:**\n`;
+      data.results.forEach((result: any, index: number) => {
+        formattedResponse += `\n${index + 1}. **${result.title}**\n`;
+        formattedResponse += `   ${result.content?.substring(0, 200)}...\n`;
+        formattedResponse += `   🔗 ${result.url}\n`;
+      });
+    }
+    
+    logger.info(`[TAVILY] Search completed, found ${data.results?.length || 0} results`);
+    
+    return {
+      ...input,
+      response: formattedResponse,
+      answer: data.answer || formattedResponse,
+      aiResponse: formattedResponse,
+      searchResults: data.results,
+      query: searchQuery
+    };
+  } catch (error: any) {
+    logger.error(`[TAVILY] Search failed:`, error.message);
+    return {
+      ...input,
+      error: error.message,
+      response: `Search Error: ${error.message}`
+    };
+  }
+});
+
+// ===========================================
+// GROQ VISION HANDLER (also callable directly as model 'groq-vision')
+// ===========================================
+
+const GROQ_VISION_MODEL = 'meta-llama/llama-4-scout-17b-16e-instruct';
+
+nodeHandlerRegistry.register('groq-vision', async (node, input, context) => {
+  const { systemPrompt } = node.config;
+  
+  // Get image data from input (base64 or URL)
+  const imageData = input?.body?.image || input?.image || input?.body?.imageUrl || input?.imageUrl;
+  const textPrompt = input?.body?.message || input?.body?.prompt || input?.message || 
+                     systemPrompt || 'Extract all text from this image.';
+  
+  logger.info(`[GROQ-VISION] Processing image with prompt: ${textPrompt?.substring(0, 100)}`);
+  
+  if (!imageData) {
+    // If no image, fall back to text-only mode
+    try {
+      const response = await axios.post(
+        'https://api.groq.com/openai/v1/chat/completions',
+        {
+          model: GROQ_VISION_MODEL,
+          messages: [{ role: 'user', content: textPrompt }],
+          temperature: 1,
+          max_tokens: 1024
+        },
+        {
+          headers: {
+            'Authorization': `Bearer ${GROQ_API_KEY}`,
+            'Content-Type': 'application/json'
+          }
+        }
+      );
+      
+      const aiResponse = response.data.choices?.[0]?.message?.content || 'No response';
+      
+      return {
+        ...input,
+        response: aiResponse,
+        answer: aiResponse,
+        aiResponse: aiResponse
+      };
+    } catch (error: any) {
+      logger.error(`[GROQ-VISION] Text processing failed:`, error.message);
+      return {
+        ...input,
+        error: error.message,
+        response: `Groq Error: ${error.message}`
+      };
+    }
+  }
+  
+  try {
+    // Build message content with image
+    const messageContent: any[] = [
+      { type: 'text', text: textPrompt }
+    ];
+    
+    // Add image - check if it's a URL or base64
+    if (imageData.startsWith('http')) {
+      messageContent.push({
+        type: 'image_url',
+        image_url: { url: imageData }
+      });
+    } else {
+      // Assume base64
+      messageContent.push({
+        type: 'image_url',
+        image_url: { url: `data:image/jpeg;base64,${imageData}` }
+      });
+    }
+    
+    const response = await axios.post(
+      'https://api.groq.com/openai/v1/chat/completions',
+      {
+        model: GROQ_VISION_MODEL,
+        messages: [{ role: 'user', content: messageContent }],
+        temperature: 1,
+        max_tokens: 1024
+      },
+      {
+        headers: {
+          'Authorization': `Bearer ${GROQ_API_KEY}`,
+          'Content-Type': 'application/json'
+        }
+      }
+    );
+    
+    const aiResponse = response.data.choices?.[0]?.message?.content || 'No text extracted';
+    
+    logger.info(`[GROQ-VISION] Extraction completed, ${aiResponse.length} chars`);
+    
+    return {
+      ...input,
+      response: aiResponse,
+      answer: aiResponse,
+      aiResponse: aiResponse,
+      extractedText: aiResponse
+    };
+  } catch (error: any) {
+    logger.error(`[GROQ-VISION] Image processing failed:`, error.message);
+    return {
+      ...input,
+      error: error.message,
+      response: `Vision Error: ${error.message}`
     };
   }
 });
@@ -250,70 +543,56 @@ nodeHandlerRegistry.register(NodeType.ACTION_HTTP, async (node, input, context) 
 });
 
 // ===========================================
-// EMAIL NODE
+// EMAIL NODE - Uses Resend API (HTTPS, no SMTP port blocking)
 // ===========================================
 
 nodeHandlerRegistry.register(NodeType.ACTION_EMAIL, async (node, input, context) => {
-  const { to, cc, bcc, subject, htmlBody, textBody, credentialId } = node.config;
+  const { to, cc, bcc, subject, htmlBody, textBody } = node.config;
 
   if (!to || !subject) {
     throw new Error('Email node requires "to" and "subject"');
   }
 
-  // Get SMTP credentials
-  let smtpConfig: any = {
-    host: process.env.SMTP_HOST || 'smtp.gmail.com',
-    port: parseInt(process.env.SMTP_PORT || '587'),
-    secure: false,
-    auth: {
-      user: process.env.SMTP_USER,
-      pass: process.env.SMTP_PASS,
-    },
-  };
+  const RESEND_API_KEY = process.env.RESEND_API_KEY;
+  const EMAIL_FROM = process.env.EMAIL_FROM || 'onboarding@resend.dev';
 
-  if (credentialId) {
-    const creds = await credentialService.getDecrypted(credentialId, context.userId || '');
-    if (creds) {
-      smtpConfig = {
-        host: creds.host,
-        port: creds.port,
-        secure: creds.secure || false,
-        auth: {
-          user: creds.user,
-          pass: creds.password,
-        },
-      };
-    }
+  if (!RESEND_API_KEY) {
+    throw new Error('RESEND_API_KEY not configured in .env');
   }
-
-  const transporter = nodemailer.createTransport(smtpConfig);
 
   const resolvedSubject = interpolateString(subject, input);
   const resolvedHtml = htmlBody ? interpolateString(htmlBody, input) : undefined;
   const resolvedText = textBody ? interpolateString(textBody, input) : JSON.stringify(input, null, 2);
 
-  const mailOptions = {
-    from: smtpConfig.auth.user,
-    to: Array.isArray(to) ? to.join(', ') : to,
-    cc: cc ? (Array.isArray(cc) ? cc.join(', ') : cc) : undefined,
-    bcc: bcc ? (Array.isArray(bcc) ? bcc.join(', ') : bcc) : undefined,
-    subject: resolvedSubject,
-    html: resolvedHtml,
-    text: resolvedText,
-  };
-
   try {
-    const result = await transporter.sendMail(mailOptions);
-    logger.info(`Email sent to ${to}`);
+    const response = await axios.post(
+      'https://api.resend.com/emails',
+      {
+        from: EMAIL_FROM,
+        to: Array.isArray(to) ? to : [to],
+        cc: cc ? (Array.isArray(cc) ? cc : [cc]) : undefined,
+        bcc: bcc ? (Array.isArray(bcc) ? bcc : [bcc]) : undefined,
+        subject: resolvedSubject,
+        html: resolvedHtml,
+        text: resolvedText,
+      },
+      {
+        headers: {
+          'Authorization': `Bearer ${RESEND_API_KEY}`,
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+
+    logger.info(`Email sent to ${to} via Resend`);
     return {
       success: true,
-      messageId: result.messageId,
-      accepted: result.accepted,
-      rejected: result.rejected,
+      messageId: response.data.id,
+      to: to,
     };
   } catch (error: any) {
-    logger.error(`Email failed: ${error.message}`);
-    throw error;
+    logger.error(`Email failed: ${error.response?.data?.message || error.message}`);
+    throw new Error(error.response?.data?.message || error.message);
   }
 });
 

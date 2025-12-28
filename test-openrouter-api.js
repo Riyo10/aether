@@ -3,7 +3,7 @@
  * Tests the OpenRouter API connection with mimo-v2-flash model
  */
 
-const API_KEY = "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";
+const API_KEY = process.env.OPENROUTER_API_KEY || "YOUR_API_KEY_HERE";
 const MODEL = "xiaomi/mimo-v2-flash:free";
 
 async function testOpenRouterAPI() {

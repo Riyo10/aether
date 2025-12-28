@@ -19,7 +19,7 @@ interface AIServiceConfig {
   baseUrl?: string;
 }
 
-const OPENROUTER_API_KEY = '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';
+const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY || '';
 const OPENROUTER_MODEL = 'xiaomi/mimo-v2-flash:free';
 
 class AIService {

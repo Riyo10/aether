@@ -250,10 +250,20 @@ class WebhookService {
         'webhook'
       );
 
+      // Extract the AI response from the output
+      const output = result.output;
+      const aiResponse = output?.aiResponse || output?.response || output?.answer || output?.output || output;
+      
+      logger.info(`Webhook execution completed`, { 
+        executionId: result.executionId,
+        hasAIResponse: !!aiResponse,
+        outputKeys: output ? Object.keys(output) : 'no output'
+      });
+
       return {
         success: true,
         executionId: result.executionId,
-        response: result.output,
+        response: aiResponse,
       };
     } catch (error: any) {
       logger.error(`Webhook execution failed: ${path}`, { error: error.message });

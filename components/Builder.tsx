@@ -45,7 +45,7 @@ const AGENT_LIBRARY: AgentTemplate[] = [
   { 
     category: 'Development', 
     name: 'Code Reviewer', 
-    model: 'gemini-3-pro-preview', 
+    model: 'mimo-v2-flash', 
     icon: Code, 
     color: 'text-blue-400', 
     prompt: `You are an expert senior software engineer specializing in code review and security analysis. Your role is to meticulously analyze code for bugs, security vulnerabilities, performance issues, and adherence to best practices.
@@ -61,7 +61,7 @@ Always be thorough but constructive. Prioritize security issues first, then corr
   { 
     category: 'Development', 
     name: 'Python Scripter', 
-    model: 'gemini-3-pro-preview', 
+    model: 'mimo-v2-flash', 
     icon: Terminal, 
     color: 'text-blue-400', 
     prompt: `You are an expert Python developer with 15+ years of experience building production-grade applications. You specialize in writing clean, efficient, and well-documented Python code.
@@ -82,7 +82,7 @@ Output format: Complete Python script with brief usage instructions at the top.`
   { 
     category: 'Development', 
     name: 'Unit Test Gen', 
-    model: 'gemini-2.5-flash', 
+    model: 'mimo-v2-flash', 
     icon: CheckIcon, 
     color: 'text-cyan-400', 
     prompt: `You are a QA automation expert specializing in test-driven development. Your role is to generate comprehensive unit tests that ensure code reliability and catch edge cases.
@@ -107,7 +107,7 @@ Output format: Complete test file ready to run.`
   { 
     category: 'Development', 
     name: 'Doc Generator', 
-    model: 'gemini-2.5-flash', 
+    model: 'mimo-v2-flash', 
     icon: FileText, 
     color: 'text-cyan-400', 
     prompt: `You are a professional technical writer with expertise in creating clear, comprehensive documentation for software projects. You transform complex technical concepts into accessible, well-structured documentation.
@@ -131,7 +131,7 @@ Use Markdown formatting. Be accurate - do NOT invent features not present in the
   { 
     category: 'Development', 
     name: 'Bug Triager', 
-    model: 'gemini-2.5-flash', 
+    model: 'mimo-v2-flash', 
     icon: AlertCircle, 
     color: 'text-red-400', 
     prompt: `You are a seasoned DevOps engineer and bug analyst specializing in debugging complex production systems. You excel at reading error logs, stack traces, and identifying root causes quickly.
@@ -161,7 +161,7 @@ Be precise and actionable. Time is critical during incidents.`
   { 
     category: 'Machine Learning', 
     name: 'Data Cleaner', 
-    model: 'gemini-2.5-flash', 
+    model: 'mimo-v2-flash', 
     icon: Sparkles, 
     color: 'text-indigo-400', 
     prompt: `You are a senior data scientist specializing in data preprocessing and quality assurance. You ensure datasets are clean, consistent, and ready for machine learning pipelines.
@@ -188,7 +188,7 @@ Always preserve data integrity. Document all transformations for reproducibility
   { 
     category: 'Machine Learning', 
     name: 'Feature Engineer', 
-    model: 'gemini-3-pro-preview', 
+    model: 'mimo-v2-flash', 
     icon: Table, 
     color: 'text-indigo-400', 
     prompt: `You are a machine learning expert specializing in feature engineering - the art of creating meaningful features that improve model performance. You understand domain knowledge, statistical methods, and ML best practices.
@@ -218,7 +218,7 @@ Focus on interpretable features that domain experts can understand.`
   { 
     category: 'Machine Learning', 
     name: 'Model Trainer', 
-    model: 'gemini-3-pro-preview', 
+    model: 'mimo-v2-flash', 
     icon: Brain, 
     color: 'text-violet-400', 
     prompt: `You are a machine learning engineer with deep expertise in training, tuning, and deploying ML models. You understand the full ML lifecycle from experimentation to production.
@@ -254,10 +254,10 @@ Always consider computational constraints and deployment requirements.`
   { 
     category: 'Internet Scraper', 
     name: 'Web Scraper', 
-    model: 'gemini-2.5-flash', 
+    model: 'tavily-search', 
     icon: Globe, 
     color: 'text-teal-400', 
-    prompt: `You are an expert web researcher and data extraction specialist. You excel at finding, synthesizing, and presenting information from across the internet in a clear, structured format.
+    prompt: `You are an expert web researcher using Tavily Search API to find real-time information from the internet. You provide accurate, up-to-date search results.
 
 When performing web research, you MUST:
 1. **SEARCH QUERY INTERPRETATION**: Understand the user's information need
@@ -280,7 +280,7 @@ Be accurate and objective. Distinguish between facts and opinions. Note when inf
   { 
     category: 'Internet Scraper', 
     name: 'News Aggregator', 
-    model: 'gemini-2.5-flash', 
+    model: 'mimo-v2-flash', 
     icon: NewspaperIcon, 
     color: 'text-emerald-400', 
     prompt: `You are a professional news analyst and curator. You track breaking news, identify trends, and present balanced summaries of current events.
@@ -309,7 +309,7 @@ Be objective and balanced. Avoid sensationalism. Focus on facts over opinions.`
   { 
     category: 'Marketing', 
     name: 'Copywriter', 
-    model: 'gemini-3-pro-preview', 
+    model: 'mimo-v2-flash', 
     icon: Megaphone, 
     color: 'text-fuchsia-400', 
     prompt: `You are an award-winning marketing copywriter with expertise in persuasion psychology, brand voice, and conversion optimization. You craft compelling copy that drives action.
@@ -341,7 +341,7 @@ Use power words. Write at 8th-grade reading level. Test multiple versions.`
   { 
     category: 'Marketing', 
     name: 'Social Manager', 
-    model: 'gemini-2.5-flash', 
+    model: 'mimo-v2-flash', 
     icon: MessageSquare, 
     color: 'text-pink-400', 
     prompt: `You are a social media strategist with expertise in viral content, community engagement, and platform-specific best practices. You create content that resonates and drives engagement.
@@ -375,7 +375,7 @@ Write in active voice. Use line breaks for readability. Optimize for mobile view
   { 
     category: 'Sales', 
     name: 'Lead Qualifier', 
-    model: 'gemini-2.5-flash', 
+    model: 'mimo-v2-flash', 
     icon: Users, 
     color: 'text-orange-400', 
     prompt: `You are a senior sales development representative (SDR) with expertise in lead qualification and sales intelligence. You efficiently identify high-value prospects and prioritize sales efforts.
@@ -407,7 +407,7 @@ Be data-driven. Focus on actionable intelligence. Time is money in sales.`
   { 
     category: 'Sales', 
     name: 'CRM Formatter', 
-    model: 'gemini-2.5-flash', 
+    model: 'mimo-v2-flash', 
     icon: Database, 
     color: 'text-amber-400', 
     prompt: `You are a CRM data specialist who transforms unstructured lead information into clean, standardized CRM records. You ensure data consistency and completeness for sales operations.
@@ -453,7 +453,7 @@ Never guess at data. Mark uncertain fields as null. Maintain data integrity.`
   { 
     category: 'Email Automation', 
     name: 'Cold Outreach', 
-    model: 'gemini-3-pro-preview', 
+    model: 'mimo-v2-flash', 
     icon: Mail, 
     color: 'text-yellow-400', 
     prompt: `You are an expert in B2B cold email outreach with a track record of 40%+ open rates and 15%+ response rates. You write emails that get read, not deleted.
@@ -487,7 +487,7 @@ Never be pushy or salesy. Provide value. Sound human, not robotic. Respect their
   { 
     category: 'Operations', 
     name: 'Summarizer', 
-    model: 'gemini-2.5-flash', 
+    model: 'mimo-v2-flash', 
     icon: LayoutGrid, 
     color: 'text-gray-300', 
     prompt: `You are an executive assistant specializing in distilling complex information into clear, actionable summaries. You help busy professionals quickly understand key points.
@@ -518,7 +518,7 @@ Write for busy executives. Lead with conclusions. Use bullet points. Be concise 
   { 
     category: 'Operations', 
     name: 'Translator', 
-    model: 'gemini-2.5-flash', 
+    model: 'mimo-v2-flash', 
     icon: GlobeIcon, 
     color: 'text-gray-300', 
     prompt: `You are a professional translator fluent in 50+ languages with expertise in maintaining tone, context, and cultural nuances across translations. You ensure communications resonate globally.
@@ -582,7 +582,7 @@ Ensure professional formatting. Validate all addresses before sending. Never sen
   { 
     category: 'Human Interaction', 
     name: 'User Input', 
-    model: 'gemini-2.5-flash', 
+    model: 'mimo-v2-flash', 
     icon: Keyboard, 
     color: 'text-rose-400', 
     prompt: `You are a conversational interface agent that collects input from users during workflow execution. You ensure clear communication and proper data collection.
@@ -610,6 +610,36 @@ When requesting user input, you MUST:
    - Maintain conversation context
 
 Be patient and helpful. Never proceed with invalid input. Respect user's time.` 
+  },
+
+  // Vision/Image Processing (Cyan)
+  { 
+    category: 'Vision', 
+    name: 'Image Text Extractor', 
+    model: 'groq-vision', 
+    icon: ImageIcon, 
+    color: 'text-cyan-400', 
+    prompt: `You are an advanced vision AI agent powered by Llama 4 Scout that extracts and analyzes text from images. You can read text in images, understand document layouts, and extract structured data.
+
+When processing images, you MUST:
+1. **TEXT EXTRACTION**:
+   - Extract ALL visible text from the image
+   - Maintain original formatting and structure
+   - Identify headers, paragraphs, lists, tables
+2. **DOCUMENT ANALYSIS**:
+   - Determine document type (invoice, receipt, form, etc.)
+   - Identify key fields and their values
+   - Note any handwritten vs printed text
+3. **STRUCTURED OUTPUT**:
+   - Raw extracted text
+   - Key-value pairs for important fields
+   - Confidence level for each extraction
+4. **ERROR HANDLING**:
+   - Report if image is unclear or text is unreadable
+   - Note areas with low confidence
+   - Suggest image quality improvements
+
+Be thorough and accurate. Extract every piece of visible text.` 
   },
 
   // Webhooks & API (Purple)
@@ -932,11 +962,16 @@ export const Builder: React.FC<BuilderProps> = ({ onNavigate, nodes, setNodes, e
   const [isAiGenerating, setIsAiGenerating] = useState(false);
   const [customAgents, setCustomAgents] = useState<AgentTemplate[]>([]);
   
+  // Custom API Key Modal State
+  const [showApiKeyModal, setShowApiKeyModal] = useState(false);
+  const [tempApiKey, setTempApiKey] = useState('');
+  const [selectedApiProvider, setSelectedApiProvider] = useState<'openrouter' | 'openai' | 'anthropic' | 'google'>('openrouter');
+  
   // System Settings State (persisted via storageService)
   const [systemSettings, setSystemSettings] = useState({
     apiGateway: 'http://localhost:8080/api/v1',
     environment: 'development' as 'production' | 'staging' | 'development',
-    defaultModel: 'gemini-2.5-flash',
+    defaultModel: 'mimo-v2-flash',
   });
 
   const canvasRef = useRef<HTMLDivElement>(null);
@@ -1015,6 +1050,9 @@ export const Builder: React.FC<BuilderProps> = ({ onNavigate, nodes, setNodes, e
           subject: node.data.subject,
           inputEndpoints: node.data.inputEndpoints || 1,
           outputEndpoints: node.data.outputEndpoints || 1,
+          // Custom API key support
+          customApiKey: node.data.customApiKey,
+          apiProvider: node.data.apiProvider,
         }
       }));
       
@@ -1231,7 +1269,7 @@ export const Builder: React.FC<BuilderProps> = ({ onNavigate, nodes, setNodes, e
       const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
         method: 'POST',
         headers: {
-          'Authorization': 'Bearer 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',
+          'Authorization': `Bearer ${import.meta.env.VITE_OPENROUTER_API_KEY || ''}`,
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
@@ -1244,19 +1282,23 @@ export const Builder: React.FC<BuilderProps> = ({ onNavigate, nodes, setNodes, e
 ${availableAgents}
 
 === SPECIAL AGENTS (ALWAYS AVAILABLE) ===
-- "User Input" (Category: Human Interaction): Allows user to enter text/data. Use this as the FIRST node when the workflow needs user input. Set "testInput" with a realistic example value.
-- "Email Sender" (Category: Integrations, model: "mock-sender"): Sends emails. Requires recipient, subject in config.
-- "Webhook Trigger" (Category: Integrations): HTTP webhook endpoint to trigger the workflow externally.
+- "User Input" (Category: Human Interaction): Allows user to enter text OR upload images. Use this as the FIRST node when the workflow needs user input. Set "testInput" with a realistic example value. Images are automatically converted to base64 and passed to vision models.
+- "Email Sender" (Category: Integrations, model: "mock-sender"): Sends emails via EmailJS to ANY recipient. Requires recipient, subject in config.
+- "Webhook Trigger" (Category: Webhooks & API, model: "webhook-trigger"): HTTP webhook endpoint to trigger the workflow externally.
+- "Web Scraper" (Category: Internet Scraper, model: "tavily-search"): Real-time web search using Tavily API - for finding current information.
+- "Image Text Extractor" (Category: Vision, model: "groq-vision"): Extract text from images using Llama 4 Scout vision model. Connect AFTER User Input to process uploaded images.
 
 === USER REQUEST ===
 "${aiWorkflowPrompt}"
 
 === YOUR TASK ===
 1. FIRST: Analyze which existing agents from the list above can fulfill the user's request
-2. PRIORITIZE using existing agents by their EXACT names (e.g., "Code Reviewer", "Email Sender", "Summarizer")
+2. PRIORITIZE using existing agents by their EXACT names (e.g., "Code Reviewer", "Email Sender", "Summarizer", "Web Scraper")
 3. ONLY create new custom agents if NO existing agent fits the needed functionality
 4. For workflows that need user input, START with a "User Input" node (Human Interaction category)
 5. Include realistic "testInput" values for User Input nodes so the workflow can be tested immediately
+6. For web search tasks, use "Web Scraper" (model: "tavily-search")
+7. For image text extraction, use "Image Text Extractor" (model: "groq-vision")
 
 Generate a JSON response with this EXACT structure (no markdown, just pure JSON):
 {
@@ -1278,9 +1320,9 @@ Generate a JSON response with this EXACT structure (no markdown, just pure JSON)
     {
       "id": "unique_id_2",
       "name": "Agent Name",
-      "category": "Development|Machine Learning|Internet Scraper|Marketing|Sales|Integrations",
+      "category": "Development|Machine Learning|Internet Scraper|Marketing|Sales|Integrations|Vision",
       "type": "AGENT",
-      "model": "gemini-2.5-flash|gemini-3-pro-preview|mock-sender",
+      "model": "mimo-v2-flash|tavily-search|groq-vision|mock-sender|webhook-trigger",
       "systemPrompt": "The agent's system prompt - use existing agent prompts or write detailed custom ones",
       "position": { "x": 450, "y": 200 },
       "inputEndpoints": 1,
@@ -1294,14 +1336,18 @@ Generate a JSON response with this EXACT structure (no markdown, just pure JSON)
 }
 
 IMPORTANT RULES:
-1. ALWAYS start with a "User Input" node (type: "TRIGGER", category: "Human Interaction") when the user needs to provide input
+1. ALWAYS start with a "User Input" node (type: "TRIGGER", category: "Human Interaction") when the user needs to provide input (text OR images)
 2. Include "testInput" field with realistic example data for User Input nodes (this is critical for testing!)
 3. Create 3-7 agents depending on complexity
 4. When using EXISTING agents: use their EXACT name and include their system prompt
-5. For Email Sender: use model "mock-sender", category "Integrations", include "recipient" and "subject" fields
-6. Position agents left-to-right with x increments of 350
-7. Connect agents logically based on data flow
-8. Return ONLY valid JSON, no explanations or markdown`
+5. DEFAULT MODEL is "mimo-v2-flash" for all text-to-text AI agents
+6. For web search/research: use model "tavily-search"
+7. For image/vision/OCR tasks: use model "groq-vision" - connect AFTER User Input for image uploads
+8. For Email Sender: use model "mock-sender", category "Integrations", include "recipient" and "subject" fields
+9. Position agents left-to-right with x increments of 350
+10. Connect agents logically based on data flow
+11. For workflows with image input: User Input → Image Text Extractor (groq-vision) → other agents
+12. Return ONLY valid JSON, no explanations or markdown`
           }]
         })
       });
@@ -1351,7 +1397,7 @@ IMPORTANT RULES:
           data: {
             label: agent.name,
             category: agent.category,
-            model: agent.model || 'gemini-2.5-flash',
+            model: agent.model || 'mimo-v2-flash',
             // For User Input nodes, use testInput as systemPrompt so it's ready to test
             systemPrompt: isUserInput && agent.testInput ? agent.testInput : agent.systemPrompt,
             inputEndpoints: agent.inputEndpoints || 1,
@@ -1396,7 +1442,7 @@ IMPORTANT RULES:
       const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
         method: 'POST',
         headers: {
-          'Authorization': 'Bearer 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',
+          'Authorization': `Bearer ${import.meta.env.VITE_OPENROUTER_API_KEY || ''}`,
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
@@ -1468,7 +1514,7 @@ Return ONLY valid JSON, no explanations or markdown.`
       const newAgent: AgentTemplate = {
         category: 'Custom AI Agents',
         name: agent.name,
-        model: agent.model || 'gemini-2.5-flash',
+        model: agent.model || 'mimo-v2-flash',
         icon: Sparkles,
         color: 'text-purple-400',
         prompt: agent.systemPrompt
@@ -1489,7 +1535,7 @@ Return ONLY valid JSON, no explanations or markdown.`
         data: {
           label: agent.name,
           category: 'Custom AI Agents',
-          model: agent.model || 'gemini-2.5-flash',
+          model: agent.model || 'mimo-v2-flash',
           systemPrompt: agent.systemPrompt
         }
       };
@@ -1535,10 +1581,22 @@ Return ONLY valid JSON, no explanations or markdown.`
                   content = extractedText;
                   addLog('success', 'PDF Parsed Successfully', selectedNodeId);
 
+              } else if (file.type.startsWith('image/')) {
+                  // Handle images - convert to base64 data URL for vision models
+                  addLog('info', 'Processing image...', selectedNodeId);
+                  const base64 = await new Promise<string>((resolve, reject) => {
+                      const reader = new FileReader();
+                      reader.onload = () => resolve(reader.result as string);
+                      reader.onerror = reject;
+                      reader.readAsDataURL(file);
+                  });
+                  content = base64; // Store as data URL (e.g., "data:image/png;base64,...")
+                  addLog('success', 'Image processed for vision AI', selectedNodeId);
+
               } else if (file.type.match(/text.*/) || file.type.includes('json') || file.name.endsWith('.md') || file.name.endsWith('.txt')) {
                   content = await file.text();
               } else {
-                 content = `[Binary content for file '${file.name}' is not supported in this demo. Please convert to PDF or text.]`;
+                 content = `[Binary content for file '${file.name}' is not supported. Please use images (jpg, png), PDF, or text files.]`;
               }
           } catch (err) {
               console.error("File Read Error", err);
@@ -1713,24 +1771,31 @@ Return ONLY valid JSON, no explanations or markdown.`
     // Create a local map to store outputs for this execution run. 
     // This solves the React state closure issue where subsequent nodes couldn't see updates from previous nodes.
     const executionResults = new Map<string, string>();
+    // Also track image URLs separately
+    const executionImages = new Map<string, string>();
 
     try {
-        // Start with explicit Triggers OR Human Interaction nodes that act as start points (no incoming edges)
+        // Start with nodes that have NO incoming edges (can start workflow independently)
+        // This includes: Triggers, User Input, or ANY node placed first (like Image Text Extractor)
         const startNodes = nodes.filter(n => {
+            // Check if node has any incoming edges
+            const hasIncoming = edges.some(e => e.target === n.id);
+            
+            // If no incoming edges, it can be a start node
+            if (!hasIncoming) return true;
+            
+            // Also allow explicit trigger types
             if (n.type === NodeType.TRIGGER || n.type === NodeType.WEBHOOK) return true;
-            if (n.data.category === 'Human Interaction') {
-                // Check if it has incoming edges
-                const hasIncoming = edges.some(e => e.target === n.id);
-                return !hasIncoming;
-            }
+            
             return false;
         });
 
-        if (startNodes.length === 0) throw new Error("No trigger or start node found.");
+        if (startNodes.length === 0) throw new Error("No start node found. Add a node to the canvas to run the workflow.");
         
         // Populate existing output state into execution map (for cases where we are resuming or using static triggers)
         nodes.forEach(n => {
              if (n.data.output) executionResults.set(n.id, n.data.output);
+             if (n.data.imageUrl) executionImages.set(n.id, n.data.imageUrl);
         });
 
         const executed = new Set<string>();
@@ -1752,32 +1817,66 @@ Return ONLY valid JSON, no explanations or markdown.`
                  if (inputs) inputContext = inputs;
             }
 
-            if (currentNode.type === NodeType.AGENT) {
-                // If this is a Human Interaction Node (User Input)
-                if (currentNode.data.category === 'Human Interaction') {
-                    addLog('info', `User Input: ${currentNode.data.label}`, currentNode.id);
-                    setNodes(prev => prev.map(n => n.id === currentNode.id ? { ...n, data: { ...n.data, isExecuting: true } } : n));
+            // Check if this is a Human Interaction (User Input) node - can be AGENT or TRIGGER type
+            const isUserInputNode = currentNode.data.category === 'Human Interaction' || 
+                                    currentNode.data.label === 'User Input' ||
+                                    currentNode.data.model === 'user-input';
+
+            if (isUserInputNode) {
+                // --- USER INPUT NODE ---
+                addLog('info', `User Input: ${currentNode.data.label}`, currentNode.id);
+                setNodes(prev => prev.map(n => n.id === currentNode.id ? { ...n, data: { ...n.data, isExecuting: true } } : n));
+                
+                await new Promise(resolve => setTimeout(resolve, 300));
+                
+                // Get the user's message from systemPrompt field
+                let userInput = currentNode.data.systemPrompt || "";
+                let imageData: string | null = null;
+                
+                // Handle attachments - separate images from text files
+                if (currentNode.data.attachments && currentNode.data.attachments.length > 0) {
+                    const textFiles: string[] = [];
                     
-                    // Simulate processing delay for effect
-                    await new Promise(resolve => setTimeout(resolve, 500));
+                    for (const attachment of currentNode.data.attachments) {
+                        if (attachment.type === 'image' && attachment.content?.startsWith('data:image')) {
+                            // Store image data URL separately for vision models
+                            imageData = attachment.content;
+                            addLog('info', `Image attached: ${attachment.name} (will be sent to vision AI)`, currentNode.id);
+                        } else {
+                            // Text/PDF content
+                            textFiles.push(`--- File: ${attachment.name} ---\n${attachment.content}\n--- End File ---`);
+                        }
+                    }
                     
-                    // Use the text entered in the UI + attachments as output
-                    let userInput = currentNode.data.systemPrompt || "";
-                    if (currentNode.data.attachments && currentNode.data.attachments.length > 0) {
-                        const fileList = currentNode.data.attachments.map(a => 
-                            `--- File: ${a.name} ---\n${a.content}\n--- End File ---`
-                        ).join('\n\n');
+                    // Append text file contents to user input
+                    if (textFiles.length > 0) {
+                        const fileList = textFiles.join('\n\n');
                         userInput = userInput ? `${userInput}\n\nAttached Files:\n${fileList}` : `Attached Files:\n${fileList}`;
                     }
-                    if (!userInput) userInput = "No user input provided.";
-                    
-                    // Update local execution map immediately for next nodes
-                    executionResults.set(currentNode.id, userInput);
+                }
+                
+                if (!userInput && !imageData) {
+                    userInput = "No user input provided.";
+                    addLog('warning', 'No message entered in User Input node', currentNode.id);
+                } else {
+                    addLog('info', `Message: "${userInput.substring(0, 50)}..."${imageData ? ' + Image' : ''}`, currentNode.id);
+                }
+                
+                // Store the user input for downstream nodes
+                // If there's an image, store it separately in executionImages map
+                let outputValue = userInput || (imageData ? 'Image provided for analysis' : '');
+                
+                executionResults.set(currentNode.id, outputValue);
+                if (imageData) {
+                    executionImages.set(currentNode.id, imageData);
+                    addLog('info', 'Image stored for downstream nodes', currentNode.id);
+                }
+                
+                setNodes(prev => prev.map(n => n.id === currentNode.id ? { ...n, data: { ...n.data, output: userInput || '[Image attached]', imageUrl: imageData, isExecuting: false } } : n));
+                addLog('success', 'User input captured', currentNode.id);
 
-                    setNodes(prev => prev.map(n => n.id === currentNode.id ? { ...n, data: { ...n.data, output: userInput, isExecuting: false } } : n));
-                    addLog('success', 'User input captured', currentNode.id);
-
-                } else if (currentNode.data.model === 'mock-sender') {
+            } else if (currentNode.type === NodeType.AGENT) {
+                if (currentNode.data.model === 'mock-sender') {
                     // --- EMAIL SENDER ---
                     // Try to extract recipient from input context if not configured
                     let recipient = currentNode.data.recipient || '';
@@ -1801,47 +1900,59 @@ Return ONLY valid JSON, no explanations or markdown.`
                     let emailOutput = '';
                     let emailSent = false;
                     
-                    // Try to send via backend API first
+                    // Send via EmailJS (works to any email!)
                     try {
-                        const response = await fetch('http://localhost:8080/api/v1/integrations/email/send', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                            },
-                            body: JSON.stringify({
-                                to: recipient,
+                        addLog('info', `Sending email via EmailJS to ${recipient}...`, currentNode.id);
+                        
+                        // @ts-ignore - emailjs is loaded via CDN
+                        const result = await window.emailjs.send(
+                            'service_s8kc34i',  // Service ID
+                            'template_l8347so', // Template ID
+                            {
+                                to_email: recipient,
                                 subject: subject,
-                                text: bodyContent,
-                                html: `<div style="font-family: Arial, sans-serif; padding: 20px;">
-                                    <h2>${subject}</h2>
-                                    <div style="white-space: pre-wrap;">${bodyContent}</div>
-                                    <hr style="margin-top: 30px; border: none; border-top: 1px solid #eee;" />
-                                    <p style="color: #666; font-size: 12px;">Sent via Aether Orchestrate from ${senderEmail}</p>
-                                </div>`
-                            })
-                        });
+                                message: bodyContent,
+                                reply_to: senderEmail,
+                            }
+                        );
                         
-                        const result = await response.json();
-                        
-                        if (result.success) {
+                        if (result.status === 200) {
                             emailSent = true;
-                            emailOutput = `[EMAIL SENT SUCCESSFULLY]\n\n--------------------------------------\nSTATUS:  Delivered\nFROM:    ${senderEmail}\nTO:      ${recipient}\nSUBJECT: ${subject}\nDATE:    ${new Date().toISOString()}\nMSG ID:  ${result.data?.messageId || 'N/A'}\n\nBODY:\n${bodyContent.substring(0, 500)}${bodyContent.length > 500 ? '...' : ''}\n--------------------------------------`;
+                            emailOutput = `[EMAIL SENT SUCCESSFULLY]\n\n--------------------------------------\nSTATUS:  Delivered ✓\nFROM:    ${senderEmail}\nTO:      ${recipient}\nSUBJECT: ${subject}\nDATE:    ${new Date().toISOString()}\nSERVICE: EmailJS\n\nBODY:\n${bodyContent.substring(0, 500)}${bodyContent.length > 500 ? '...' : ''}\n--------------------------------------`;
                             addLog('success', `Email sent successfully to ${recipient}`, currentNode.id);
                         } else {
-                            throw new Error(result.error || 'Failed to send email');
+                            throw new Error('EmailJS returned non-200 status');
                         }
-                    } catch (apiError: any) {
-                        console.log('Backend email failed, falling back to mailto:', apiError.message);
+                    } catch (emailJsError: any) {
+                        console.error('EmailJS failed:', emailJsError);
                         
-                        // Fallback: Open mail client with logged-in user's email context
+                        // Fallback: Try backend Resend API (only works for verified emails)
                         try {
+                            const response = await fetch('http://localhost:8080/api/v1/integrations/email/send', {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({
+                                    to: recipient,
+                                    subject: subject,
+                                    text: bodyContent,
+                                })
+                            });
+                            
+                            const result = await response.json();
+                            
+                            if (result.success) {
+                                emailSent = true;
+                                emailOutput = `[EMAIL SENT SUCCESSFULLY]\n\n--------------------------------------\nSTATUS:  Delivered (via Resend)\nTO:      ${recipient}\nSUBJECT: ${subject}\nDATE:    ${new Date().toISOString()}\n--------------------------------------`;
+                                addLog('success', `Email sent via backup (Resend) to ${recipient}`, currentNode.id);
+                            } else {
+                                throw new Error(result.error || 'Resend also failed');
+                            }
+                        } catch (resendError: any) {
+                            // Final fallback: mailto link
                             const mailtoLink = `mailto:${recipient}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(bodyContent.substring(0, 1500))}`;
                             window.open(mailtoLink, '_blank');
-                            emailOutput = `[EMAIL CLIENT OPENED]\nBackend SMTP not configured. Opening your default email client to send from ${senderEmail}.\n\n--------------------------------------\nSTATUS:  Draft Created (Please send manually)\nFROM:    ${senderEmail} (your logged-in account)\nTO:      ${recipient}\nSUBJECT: ${subject}\nDATE:    ${new Date().toISOString()}\n\nBODY (Preview):\n${bodyContent.substring(0, 500)}${bodyContent.length > 500 ? '...' : ''}\n--------------------------------------\n\nNote: To enable automatic email sending, configure SMTP in the backend.`;
-                            addLog('warning', 'Email client opened (backend SMTP not configured)', currentNode.id);
-                        } catch (e) {
-                            emailOutput = `[EMAIL FAILED]\nCould not send email or open mail client.\nError: ${apiError.message}`;
-                            addLog('error', 'Failed to send email', currentNode.id);
+                            emailOutput = `[EMAIL CLIENT OPENED]\nAutomatic sending failed. Opening your email client.\n\n--------------------------------------\nTO:      ${recipient}\nSUBJECT: ${subject}\nERROR:   ${emailJsError?.text || emailJsError?.message || 'Unknown error'}\n--------------------------------------`;
+                            addLog('warning', 'Email client opened as fallback', currentNode.id);
                         }
                     }
                     
@@ -1850,16 +1961,49 @@ Return ONLY valid JSON, no explanations or markdown.`
 
                 } else {
                     // Standard AI Agent
-                    addLog('info', `Agent Thinking: ${currentNode.data.label}`, currentNode.id);
+                    addLog('info', `Agent Thinking: ${currentNode.data.label} (Model: ${currentNode.data.model})`, currentNode.id);
+                    console.log(`[WORKFLOW] Executing node: ${currentNode.data.label}, Model: ${currentNode.data.model}, Input: ${inputContext?.substring(0, 100)}`);
                     setNodes(prev => prev.map(n => n.id === currentNode.id ? { ...n, data: { ...n.data, isExecuting: true } } : n));
+                    
+                    // Check if input contains image data (from User Input node)
+                    let textInput = inputContext || "Start";
+                    let imageUrl: string | undefined = undefined;
+                    
+                    // 1. Check if current node has image directly uploaded (groq-vision config)
+                    if (currentNode.data.imageUrl) {
+                        imageUrl = currentNode.data.imageUrl;
+                        addLog('info', `Using image from node config: ${currentNode.data.imageName || 'image'}`, currentNode.id);
+                    }
+                    
+                    // 2. Check executionImages map (set by User Input node during this run)
+                    if (!imageUrl) {
+                        const upstreamEdge = edges.find(e => e.target === currentNode.id);
+                        if (upstreamEdge && executionImages.has(upstreamEdge.source)) {
+                            imageUrl = executionImages.get(upstreamEdge.source);
+                            addLog('info', 'Image received from User Input execution', currentNode.id);
+                        }
+                    }
+                    
+                    // 3. Check if upstream node has imageUrl in its data (from previous run)
+                    if (!imageUrl) {
+                        const upstreamEdge = edges.find(e => e.target === currentNode.id);
+                        if (upstreamEdge) {
+                            const upstreamNode = nodes.find(n => n.id === upstreamEdge.source);
+                            if (upstreamNode?.data.imageUrl) {
+                                imageUrl = upstreamNode.data.imageUrl;
+                                addLog('info', 'Image received from upstream node data', currentNode.id);
+                            }
+                        }
+                    }
                     
                     // Stronger context injection for Doc Generator or any node relying heavily on inputs
                     let effectivePrompt = currentNode.data.systemPrompt || '';
-                    if (currentNode.data.label.includes('Doc Generator') && inputContext) {
-                        effectivePrompt = `${effectivePrompt}\n\n[INPUT CONTENT TO DOCUMENT]:\n${inputContext}`;
+                    if (currentNode.data.label.includes('Doc Generator') && textInput) {
+                        effectivePrompt = `${effectivePrompt}\n\n[INPUT CONTENT TO DOCUMENT]:\n${textInput}`;
                     }
 
-                    const response = await generateAgentResponse(inputContext || "Start", effectivePrompt, currentNode.data.model);
+                    const response = await generateAgentResponse(textInput, effectivePrompt, currentNode.data.model, imageUrl);
+                    console.log(`[WORKFLOW] Response received for ${currentNode.data.label}: ${response?.substring(0, 100)}`);
                     
                     let downloadUrl = undefined;
 
@@ -2567,7 +2711,7 @@ Return ONLY valid JSON, no explanations or markdown.`
                         acc[agent.category].push(agent);
                         return acc;
                       }, {} as Record<string, AgentTemplate[]>)
-                    ).slice(0, 5).map(([category, agents]) => (
+                    ).slice(0, 5).map(([category, agents]: [string, AgentTemplate[]]) => (
                       <div key={category}>
                         <div className="px-4 py-1.5 text-[9px] text-gray-600 font-medium">{category}</div>
                         {agents.slice(0, 3).map(agent => (
@@ -3172,15 +3316,86 @@ Return ONLY valid JSON, no explanations or markdown.`
                                 value={selectedNode.data.model}
                                 onChange={(e) => {
                                   const newModel = e.target.value;
-                                  setNodes(prev => prev.map(n => n.id === selectedNode.id ? { ...n, data: { ...n.data, model: newModel } } : n));
+                                  setNodes(prev => prev.map(n => n.id === selectedNode.id ? { 
+                                    ...n, 
+                                    data: { ...n.data, model: newModel } 
+                                  } : n));
                                 }}
                                 className="w-full bg-black/50 border border-white/10 p-2 text-xs text-cream focus:border-cherry focus:outline-none rounded-md"
                               >
-                                <option value="gemini-2.5-flash">Gemini 2.5 Flash</option>
-                                <option value="gemini-3-pro-preview">Gemini 3.0 Pro</option>
-                                <option value="mimo-v2-flash">Mimo V2 Flash (Free)</option>
+                                <option value="mimo-v2-flash">📱 Xiaomi Mimo V2 Flash (Text AI)</option>
+                                <option value="tavily-search">🔍 Tavily (Web Search)</option>
+                                <option value="groq-vision">👁️ Groq Llama 4 Scout (Vision/OCR)</option>
                               </select>
+                              <p className="text-[9px] text-gray-500 mt-1">
+                                {selectedNode.data.model === 'mimo-v2-flash' && '💬 Best for text generation, summaries, code, etc.'}
+                                {selectedNode.data.model === 'tavily-search' && '🌐 Real-time web search with sources'}
+                                {selectedNode.data.model === 'groq-vision' && '🖼️ Extract text from images (OCR)'}
+                              </p>
                             </div>
+                            
+                            {/* Image Upload for Vision Model */}
+                            {selectedNode.data.model === 'groq-vision' && (
+                              <div className="space-y-2 p-3 bg-purple-500/10 border border-purple-500/30 rounded-lg">
+                                <label className="text-[10px] font-bold text-purple-300 uppercase tracking-wider flex items-center gap-2">
+                                  <span>📷</span> Upload Image for OCR
+                                </label>
+                                <input
+                                  type="file"
+                                  accept="image/*"
+                                  onChange={async (e) => {
+                                    if (e.target.files && e.target.files[0]) {
+                                      const file = e.target.files[0];
+                                      addLog('info', `Processing image: ${file.name}`, selectedNode.id);
+                                      
+                                      try {
+                                        const base64 = await new Promise<string>((resolve, reject) => {
+                                          const reader = new FileReader();
+                                          reader.onload = () => resolve(reader.result as string);
+                                          reader.onerror = reject;
+                                          reader.readAsDataURL(file);
+                                        });
+                                        
+                                        setNodes(prev => prev.map(n => n.id === selectedNode.id ? {
+                                          ...n,
+                                          data: { ...n.data, imageUrl: base64, imageName: file.name }
+                                        } : n));
+                                        
+                                        addLog('success', `Image loaded: ${file.name}`, selectedNode.id);
+                                      } catch (err) {
+                                        addLog('error', 'Failed to process image', selectedNode.id);
+                                      }
+                                    }
+                                  }}
+                                  className="w-full text-xs text-cream file:mr-3 file:py-1 file:px-3 file:rounded file:border-0 file:text-xs file:bg-purple-600 file:text-white hover:file:bg-purple-500 cursor-pointer"
+                                />
+                                {selectedNode.data.imageUrl && (
+                                  <div className="mt-2 space-y-2">
+                                    <div className="flex items-center justify-between">
+                                      <span className="text-[10px] text-green-400">✓ {selectedNode.data.imageName || 'Image loaded'}</span>
+                                      <button
+                                        onClick={() => setNodes(prev => prev.map(n => n.id === selectedNode.id ? {
+                                          ...n,
+                                          data: { ...n.data, imageUrl: undefined, imageName: undefined }
+                                        } : n))}
+                                        className="text-[10px] text-red-400 hover:text-red-300"
+                                      >
+                                        Remove
+                                      </button>
+                                    </div>
+                                    <img 
+                                      src={selectedNode.data.imageUrl} 
+                                      alt="Preview" 
+                                      className="max-h-32 rounded border border-white/20 object-contain"
+                                    />
+                                  </div>
+                                )}
+                                <p className="text-[9px] text-gray-500">
+                                  Upload an image directly, or connect from a User Input node
+                                </p>
+                              </div>
+                            )}
+                            
                             <div className="space-y-1">
                               <label className="text-[10px] font-bold text-cream/50 uppercase tracking-wider">System Prompt</label>
                               <textarea 
@@ -3284,6 +3499,191 @@ Return ONLY valid JSON, no explanations or markdown.`
         </div>
 
       </div>
+
+      {/* Custom API Key Modal */}
+      {showApiKeyModal && selectedNode && (
+        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-[100] animate-in fade-in duration-200">
+          <div className="bg-[#0a0a0a] border border-white/10 rounded-xl w-[450px] shadow-2xl animate-in zoom-in-95 duration-200">
+            {/* Modal Header */}
+            <div className="flex items-center justify-between p-4 border-b border-white/10">
+              <div className="flex items-center gap-2">
+                <div className="w-8 h-8 bg-gradient-to-br from-amber-500 to-orange-600 rounded-lg flex items-center justify-center">
+                  <Zap className="w-4 h-4 text-white" />
+                </div>
+                <div>
+                  <h3 className="text-sm font-bold text-cream">Configure Custom API Key</h3>
+                  <p className="text-[10px] text-gray-500">Use your own API key for this agent</p>
+                </div>
+              </div>
+              <button 
+                onClick={() => {
+                  setShowApiKeyModal(false);
+                  setTempApiKey('');
+                }}
+                className="p-1.5 hover:bg-white/10 rounded-lg transition-colors"
+              >
+                <X className="w-4 h-4 text-gray-400" />
+              </button>
+            </div>
+            
+            {/* Modal Body */}
+            <div className="p-4 space-y-4">
+              {/* Provider Selection */}
+              <div className="space-y-2">
+                <label className="text-[10px] font-bold text-cream/50 uppercase tracking-wider">API Provider</label>
+                <div className="grid grid-cols-4 gap-2">
+                  {[
+                    { id: 'openrouter', name: 'OpenRouter', icon: '🌐' },
+                    { id: 'openai', name: 'OpenAI', icon: '🟢' },
+                    { id: 'anthropic', name: 'Anthropic', icon: '🟣' },
+                    { id: 'google', name: 'Google', icon: '🔵' },
+                  ].map((provider) => (
+                    <button
+                      key={provider.id}
+                      onClick={() => setSelectedApiProvider(provider.id as any)}
+                      className={`p-2 rounded-lg border text-center transition-all ${
+                        selectedApiProvider === provider.id 
+                          ? 'border-cherry bg-cherry/20 text-cream' 
+                          : 'border-white/10 hover:border-white/30 text-gray-400'
+                      }`}
+                    >
+                      <span className="text-lg">{provider.icon}</span>
+                      <span className="block text-[9px] mt-1">{provider.name}</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+              
+              {/* API Key Input */}
+              <div className="space-y-2">
+                <label className="text-[10px] font-bold text-cream/50 uppercase tracking-wider">API Key</label>
+                <input
+                  type="password"
+                  value={tempApiKey}
+                  onChange={(e) => setTempApiKey(e.target.value)}
+                  placeholder={
+                    selectedApiProvider === 'openrouter' ? 'sk-or-v1-...' :
+                    selectedApiProvider === 'openai' ? 'sk-...' :
+                    selectedApiProvider === 'anthropic' ? 'sk-ant-...' :
+                    'AI...'
+                  }
+                  className="w-full bg-black/50 border border-white/10 p-3 text-sm text-cream font-mono focus:border-cherry focus:outline-none rounded-lg"
+                />
+                <p className="text-[9px] text-gray-500">
+                  {selectedApiProvider === 'openrouter' && '🌐 Get your key at openrouter.ai/keys'}
+                  {selectedApiProvider === 'openai' && '🟢 Get your key at platform.openai.com/api-keys'}
+                  {selectedApiProvider === 'anthropic' && '🟣 Get your key at console.anthropic.com'}
+                  {selectedApiProvider === 'google' && '🔵 Get your key at aistudio.google.com/apikey'}
+                </p>
+              </div>
+              
+              {/* Model Selection based on provider */}
+              <div className="space-y-2">
+                <label className="text-[10px] font-bold text-cream/50 uppercase tracking-wider">Model</label>
+                <select
+                  value={selectedNode.data.model || 'gpt-4o'}
+                  onChange={(e) => {
+                    setNodes(prev => prev.map(n => n.id === selectedNode.id ? { 
+                      ...n, 
+                      data: { ...n.data, model: e.target.value } 
+                    } : n));
+                  }}
+                  className="w-full bg-black/50 border border-white/10 p-2 text-xs text-cream focus:border-cherry focus:outline-none rounded-md"
+                >
+                  {selectedApiProvider === 'openrouter' && (
+                    <>
+                      <option value="gpt-4o">GPT-4o</option>
+                      <option value="gpt-4o-mini">GPT-4o Mini</option>
+                      <option value="claude-3.5-sonnet">Claude 3.5 Sonnet</option>
+                      <option value="claude-3-opus">Claude 3 Opus</option>
+                      <option value="gemini-2.5-flash">Gemini 2.5 Flash</option>
+                    </>
+                  )}
+                  {selectedApiProvider === 'openai' && (
+                    <>
+                      <option value="custom-openai">GPT-4o</option>
+                      <option value="gpt-4o-mini">GPT-4o Mini</option>
+                      <option value="gpt-4-turbo">GPT-4 Turbo</option>
+                      <option value="gpt-3.5-turbo">GPT-3.5 Turbo</option>
+                    </>
+                  )}
+                  {selectedApiProvider === 'anthropic' && (
+                    <>
+                      <option value="custom-anthropic">Claude 3.5 Sonnet</option>
+                      <option value="claude-3-opus">Claude 3 Opus</option>
+                      <option value="claude-3-haiku">Claude 3 Haiku</option>
+                    </>
+                  )}
+                  {selectedApiProvider === 'google' && (
+                    <>
+                      <option value="custom-google">Gemini 2.0 Flash</option>
+                      <option value="gemini-1.5-pro">Gemini 1.5 Pro</option>
+                      <option value="gemini-1.5-flash">Gemini 1.5 Flash</option>
+                    </>
+                  )}
+                </select>
+              </div>
+              
+              {/* Warning */}
+              <div className="p-3 bg-amber-500/10 border border-amber-500/30 rounded-lg">
+                <div className="flex items-start gap-2">
+                  <AlertCircle className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
+                  <div>
+                    <p className="text-[10px] text-amber-400 font-bold">Security Notice</p>
+                    <p className="text-[9px] text-amber-400/70 mt-1">
+                      Your API key is stored with the workflow and sent to the backend for execution. 
+                      Never share workflows containing API keys publicly.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            {/* Modal Footer */}
+            <div className="flex items-center justify-end gap-2 p-4 border-t border-white/10">
+              <button
+                onClick={() => {
+                  // Clear custom API key
+                  setNodes(prev => prev.map(n => n.id === selectedNode.id ? { 
+                    ...n, 
+                    data: { ...n.data, customApiKey: undefined, apiProvider: undefined } 
+                  } : n));
+                  setShowApiKeyModal(false);
+                  setTempApiKey('');
+                }}
+                className="px-4 py-2 text-[10px] font-bold text-gray-400 hover:text-white transition-colors"
+              >
+                Clear & Use Free Models
+              </button>
+              <button
+                onClick={() => {
+                  if (tempApiKey.length > 10) {
+                    setNodes(prev => prev.map(n => n.id === selectedNode.id ? { 
+                      ...n, 
+                      data: { 
+                        ...n.data, 
+                        customApiKey: tempApiKey,
+                        apiProvider: selectedApiProvider
+                      } 
+                    } : n));
+                    setShowApiKeyModal(false);
+                    setTempApiKey('');
+                    addLog('success', `Custom API key configured for ${selectedApiProvider}`);
+                  }
+                }}
+                disabled={tempApiKey.length < 10}
+                className={`px-4 py-2 text-[10px] font-bold uppercase rounded-lg transition-all ${
+                  tempApiKey.length >= 10
+                    ? 'bg-cherry text-white hover:bg-cherry/80'
+                    : 'bg-gray-800 text-gray-500 cursor-not-allowed'
+                }`}
+              >
+                Save API Key
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
     </div>
   );

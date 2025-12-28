@@ -645,9 +645,18 @@ app.post('/api/v1/integrations/email/send', async (req: Request, res: Response) 
       return res.status(400).json({ success: false, error: 'Either text or html body is required' });
     }
     
+    console.log(`[EMAIL] Sending email to: ${to}, subject: ${subject}`);
     const result = await emailService.send({ to, subject, text, html });
+    
+    if (!result.success) {
+      console.error(`[EMAIL] Failed: ${result.error}`);
+      return res.status(500).json({ success: false, error: result.error || 'Failed to send email' });
+    }
+    
+    console.log(`[EMAIL] Sent successfully! MessageId: ${result.messageId}`);
     res.json({ success: true, data: { messageId: result.messageId } });
   } catch (error: any) {
+    console.error(`[EMAIL] Exception: ${error.message}`);
     res.status(500).json({ success: false, error: error.message });
   }
 });

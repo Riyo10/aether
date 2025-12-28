@@ -1,9 +1,7 @@
 // ===========================================
 // AETHER - Email Service
-// Send emails via Gmail SMTP
+// Send emails via Resend API (HTTPS)
 // ===========================================
-
-import nodemailer from 'nodemailer';
 
 interface EmailOptions {
   to: string | string[];
@@ -12,11 +10,6 @@ interface EmailOptions {
   html?: string;
   from?: string;
   replyTo?: string;
-  attachments?: Array<{
-    filename: string;
-    content: string | Buffer;
-    contentType?: string;
-  }>;
 }
 
 interface EmailResult {
@@ -25,58 +18,53 @@ interface EmailResult {
   error?: string;
 }
 
-// Create reusable transporter
-const createTransporter = () => {
-  const host = process.env.SMTP_HOST || 'smtp.gmail.com';
-  const port = parseInt(process.env.SMTP_PORT || '587');
-  const user = process.env.SMTP_USER;
-  const pass = process.env.SMTP_PASS;
-
-  if (!user || !pass) {
-    console.warn('Email: SMTP credentials not configured');
-    return null;
-  }
-
-  return nodemailer.createTransport({
-    host,
-    port,
-    secure: port === 465,
-    auth: {
-      user,
-      pass: pass.replace(/\s/g, ''), // Remove spaces from app password
-    },
-  });
-};
+const RESEND_API_KEY = process.env.RESEND_API_KEY;
+const EMAIL_FROM = process.env.EMAIL_FROM || 'onboarding@resend.dev';
 
 export const emailService = {
   /**
-   * Send an email
+   * Send an email via Resend API
    */
   async send(options: EmailOptions): Promise<EmailResult> {
-    const transporter = createTransporter();
-    
-    if (!transporter) {
-      return { success: false, error: 'Email service not configured. Set SMTP_USER and SMTP_PASS in .env' };
+    if (!RESEND_API_KEY) {
+      console.error('[EMAIL] Resend API key not configured');
+      return { success: false, error: 'Email service not configured. Set RESEND_API_KEY in .env' };
     }
 
-    const fromAddress = options.from || process.env.SMTP_USER;
+    const fromAddress = options.from || EMAIL_FROM;
+    const toAddresses = Array.isArray(options.to) ? options.to : [options.to];
+
+    console.log(`[EMAIL] Sending via Resend - From: ${fromAddress}, To: ${toAddresses.join(', ')}`);
 
     try {
-      const info = await transporter.sendMail({
-        from: `"Aether Workflow" <${fromAddress}>`,
-        to: Array.isArray(options.to) ? options.to.join(', ') : options.to,
-        subject: options.subject,
-        text: options.text,
-        html: options.html,
-        replyTo: options.replyTo,
-        attachments: options.attachments,
+      const response = await fetch('https://api.resend.com/emails', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${RESEND_API_KEY}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          from: fromAddress,
+          to: toAddresses,
+          subject: options.subject,
+          text: options.text,
+          html: options.html,
+          reply_to: options.replyTo,
+        }),
       });
 
-      console.log(`Email sent: ${info.messageId}`);
-      return { success: true, messageId: info.messageId };
+      const data: any = await response.json();
+
+      if (!response.ok) {
+        console.error('[EMAIL] Resend error:', data);
+        return { success: false, error: data.message || data.error || 'Failed to send email' };
+      }
+
+      console.log(`[EMAIL] Sent successfully! ID: ${data.id}`);
+      return { success: true, messageId: data.id };
 
     } catch (error: any) {
-      console.error('Email send failed:', error.message);
+      console.error('[EMAIL] Exception:', error.message);
       return { success: false, error: error.message };
     }
   },
@@ -155,18 +143,12 @@ export const emailService = {
    * Test email configuration
    */
   async testConnection(): Promise<{ success: boolean; error?: string }> {
-    const transporter = createTransporter();
+    if (!RESEND_API_KEY) {
+      return { success: false, error: 'RESEND_API_KEY not configured' };
+    }
     
-    if (!transporter) {
-      return { success: false, error: 'SMTP not configured' };
-    }
-
-    try {
-      await transporter.verify();
-      return { success: true };
-    } catch (error: any) {
-      return { success: false, error: error.message };
-    }
+    // Resend doesn't have a verify endpoint, so we just check if key exists
+    return { success: true };
   },
 };
 
